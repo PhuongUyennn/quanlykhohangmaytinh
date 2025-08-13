@@ -36,7 +36,8 @@ public class CTPhieuXuat extends javax.swing.JDialog {
 
         // Thông tin phiếu
         labelMaPhieu.setText(pn.getMaPhieu());
-        labelNguoiTao.setText(AccountDAO.getInstance().selectById(pn.getNguoiTao()).getFullName());
+        model.Account accNguoiTao = AccountDAO.getInstance().selectById(pn.getNguoiTao());
+        labelNguoiTao.setText(accNguoiTao != null ? accNguoiTao.getFullName() : pn.getNguoiTao());
         labelTongTien.setText(this.parent.getFormatter().format(pn.getTongTien()) + "đ");
         labelThoiGianTao.setText(this.parent.getFormatDate().format(pn.getThoiGianTao()));
 

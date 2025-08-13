@@ -50,7 +50,7 @@ import model.PhieuXuat;
 public class WritePDF {
 
     DecimalFormat formatter = new DecimalFormat("###,###,###");
-    SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/YYYY HH:mm");
+    SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     Document document = new Document();
     FileOutputStream file;
     JFrame jf = new JFrame();
@@ -110,11 +110,12 @@ public class WritePDF {
         fd.setLocation(leftCorner);
         fd.setFile(name + ".pdf");
         fd.setVisible(true);
-        String url = fd.getDirectory() + fd.getFile();
-        if (url.equals("null")) {
+        String dir = fd.getDirectory();
+        String fileName = fd.getFile();
+        if (dir == null || fileName == null) {
             return null;
         }
-        return url;
+        return new File(dir, fileName).getAbsolutePath();
     }
 
     public void writePhieuNhap(String mapn) {
@@ -222,7 +223,8 @@ public class WritePDF {
 
             Paragraph para1 = new Paragraph(new Phrase("Mã phiếu: " + mapn, fontData));
             Paragraph para2 = new Paragraph(new Phrase("Thời gian tạo: " + formatDate.format(pn.getThoiGianTao()), fontData));
-            Paragraph para3 = new Paragraph(new Phrase("Người tạo: " + AccountDAO.getInstance().selectById(pn.getNguoiTao()).getFullName(), fontData));
+            model.Account acc = AccountDAO.getInstance().selectById(pn.getNguoiTao());
+            Paragraph para3 = new Paragraph(new Phrase("Người tạo: " + (acc != null ? acc.getFullName() : pn.getNguoiTao()), fontData));
             para1.setIndentationLeft(40);
             para2.setIndentationLeft(40);
             para3.setIndentationLeft(40);
@@ -272,9 +274,10 @@ public class WritePDF {
             JOptionPane.showMessageDialog(null, "Ghi file thành công: " + url);
             openFile(url);
 
-        } catch (DocumentException | FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "Lỗi khi ghi file " + url);
+                } catch (DocumentException | FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Lỗi khi ghi file " + url + "\n" + ex.getMessage());
+            ex.printStackTrace();
         }
-
+ 
     }
 }
