@@ -87,8 +87,11 @@ public class PhieuXuatForm extends javax.swing.JInternalFrame {
             ArrayList<PhieuXuat> allPhieu = PhieuXuatDAO.getInstance().selectAll();
             tblModel.setRowCount(0);
             for (int i = 0; i < allPhieu.size(); i++) {
+                String nguoiTaoKey = allPhieu.get(i).getNguoiTao();
+                model.Account acc = AccountDAO.getInstance().selectById(nguoiTaoKey);
+                String nguoiTaoDisplay = acc != null ? acc.getFullName() : nguoiTaoKey;
                 tblModel.addRow(new Object[]{
-                    i + 1, allPhieu.get(i).getMaPhieu(), AccountDAO.getInstance().selectById(allPhieu.get(i).getNguoiTao()).getFullName(), formatDate.format(allPhieu.get(i).getThoiGianTao()), formatter.format(allPhieu.get(i).getTongTien()) + "đ"
+                    i + 1, allPhieu.get(i).getMaPhieu(), nguoiTaoDisplay, formatDate.format(allPhieu.get(i).getThoiGianTao()), formatter.format(allPhieu.get(i).getTongTien()) + "đ"
                 });
             }
         } catch (Exception e) {
@@ -608,16 +611,19 @@ public class PhieuXuatForm extends javax.swing.JInternalFrame {
 
     private void loadDataToTableArr(ArrayList<PhieuXuat> allPhieu) {
         try {
-            tblModel.setRowCount(0);
+                        tblModel.setRowCount(0);
             for (int i = 0; i < allPhieu.size(); i++) {
+                String nguoiTaoKey = allPhieu.get(i).getNguoiTao();
+                model.Account acc = AccountDAO.getInstance().selectById(nguoiTaoKey);
+                String nguoiTaoDisplay = acc != null ? acc.getFullName() : nguoiTaoKey;
                 tblModel.addRow(new Object[]{
-                    i + 1, allPhieu.get(i).getMaPhieu(), AccountDAO.getInstance().selectById(allPhieu.get(i).getNguoiTao()).getFullName(), formatDate.format(allPhieu.get(i).getThoiGianTao()), formatter.format(allPhieu.get(i).getTongTien()) + "đ"
+                    i + 1, allPhieu.get(i).getMaPhieu(), nguoiTaoDisplay, formatDate.format(allPhieu.get(i).getThoiGianTao()), formatter.format(allPhieu.get(i).getTongTien()) + "đ"
                 });
             }
         } catch (Exception e) {
         }
     }
-
+ 
     public void searchAllCheck() {
         String luaChon = jComboBoxS.getSelectedItem().toString();
         String content = jTextFieldSearch.getText();

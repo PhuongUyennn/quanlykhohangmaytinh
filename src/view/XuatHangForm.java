@@ -654,10 +654,9 @@ public class XuatHangForm extends javax.swing.JInternalFrame {
                     String tenSanPham = excelRow.getCell(2).getStringCellValue();
                     int soLuong = (int) (excelRow.getCell(3).getNumericCellValue());
                 
-                   double donGiaNhap = MayTinhDAO.getInstance().selectById(maSanPham).getGia();
-                   double donGiaXuat = donGiaNhap * 1.1;  // cộng thêm 10%
-                   ChiTietPhieu ctpnew = new ChiTietPhieu(maPhieu, maSanPham, soLuong, donGiaXuat);
-
+                                      double donGiaNhap = MayTinhDAO.getInstance().selectById(maSanPham).getGia();
+                   ChiTietPhieu ctpnew = new ChiTietPhieu(maPhieu, maSanPham, soLuong, donGiaNhap);
+ 
                     CTPhieu.add(ctpnew);
                 }
                 loadDataToTableNhapHang();
