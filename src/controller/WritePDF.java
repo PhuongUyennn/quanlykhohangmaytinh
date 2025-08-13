@@ -50,7 +50,7 @@ import model.PhieuXuat;
 public class WritePDF {
 
     DecimalFormat formatter = new DecimalFormat("###,###,###");
-    SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/YYYY HH:mm");
+    SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     Document document = new Document();
     FileOutputStream file;
     JFrame jf = new JFrame();
@@ -110,11 +110,12 @@ public class WritePDF {
         fd.setLocation(leftCorner);
         fd.setFile(name + ".pdf");
         fd.setVisible(true);
-        String url = fd.getDirectory() + fd.getFile();
-        if (url.equals("null")) {
+        String dir = fd.getDirectory();
+        String fileName = fd.getFile();
+        if (dir == null || fileName == null) {
             return null;
         }
-        return url;
+        return new File(dir, fileName).getAbsolutePath();
     }
 
     public void writePhieuNhap(String mapn) {
@@ -272,9 +273,10 @@ public class WritePDF {
             JOptionPane.showMessageDialog(null, "Ghi file thành công: " + url);
             openFile(url);
 
-        } catch (DocumentException | FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "Lỗi khi ghi file " + url);
+                } catch (DocumentException | FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Lỗi khi ghi file " + url + "\n" + ex.getMessage());
+            ex.printStackTrace();
         }
-
+ 
     }
 }
